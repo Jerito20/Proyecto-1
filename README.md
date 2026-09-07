@@ -1,84 +1,60 @@
-# Practica I - From Pixels to the Integral: Area Under a Curve
+# Practica I - Area bajo la curva (Haskell + Prolog)
 
-**Curso:** ST0244 - Programming Languages Programming
-**Profesor:** Alexander Narváez Berrío
-**Universidad EAFIT**
+Curso: Lenguajes y Paradigmas de Computación - S2666-0262
+EAFIT
 
-## Integrantes
+## Equipo
 
-- Jerónimo Espinosa López — Prolog
-- Mateo Zuluaga Buitrago — Haskell
+- Jerónimo Espinosa López (Prolog)
+- Mateo Zuluaga Buitrago (Haskell)
 
-## Entorno de desarrollo
+## Qué hace esto
 
-- **Prolog:** SWI-Prolog (probado en versión 9.x)
-- **Haskell:** _(completar por Mateo: GHC / Stack / Cabal y versión usada)_
-- Sistema operativo: _(completar)_
+El profe nos dio una imagen binaria (`curva_binaria_P4.pbm`, formato PBM P4) que representa una curva. La idea es leer cada columna de la imagen, contar cuántos píxeles negros consecutivos tiene desde abajo (eso es f(x)), armar el vector de alturas M = [f(0), f(1), ..., f(n-1)], y sumar todo para sacar el área bajo la curva (suma de Riemann con Δx = 1).
 
-## Estructura del repositorio
+Lo mismo se resuelve dos veces, con dos paradigmas distintos, y debe dar la misma área en ambos.
+
+## Estructura
+
+- `Prolog/curva.pl` — solución en Prolog
+- `Haskell/` — solución en Haskell (Mateo)
+- `curva_binaria_P4.pbm` — imagen de entrada
+
+## Correr la parte de Prolog
+
+Necesitas SWI-Prolog instalado.
 
 ```
-README.md
-Haskell/        -> implementación funcional
-Prolog/         -> implementación lógica/declarativa
-curva_binaria_P4.pbm  -> archivo de entrada suministrado por el profesor
+swipl Prolog/curva.pl curva_binaria_P4.pbm
 ```
 
-## Cómo ejecutar la solución en Prolog
+o dentro del intérprete:
 
-1. Instalar SWI-Prolog: https://www.swi-prolog.org/download/stable
-2. Desde la raíz del repositorio:
-   ```
-   swipl Prolog/curva.pl curva_binaria_P4.pbm
-   ```
-   o, dentro del intérprete interactivo:
-   ```prolog
-   ?- [ 'Prolog/curva.pl' ].
-   ?- resolver('curva_binaria_P4.pbm').
-   ```
-3. El programa imprime: dimensiones de la imagen, el área bajo la curva,
-   el vector de alturas M[x]=f(x) como gráfico de barras, la
-   reconstrucción de la curva escalada a consola, y 10 valores de
-   muestra x_i -> f(x_i).
-
-## Cómo ejecutar la solución en Haskell
-
-_(completar por Mateo con los comandos exactos, por ejemplo:)_
-```
-cd Haskell
-ghc Main.hs -o curva
-./curva ../curva_binaria_P4.pbm
+```prolog
+?- [ 'Prolog/curva.pl' ].
+?- resolver('curva_binaria_P4.pbm').
 ```
 
-## Estrategia de visualización en consola
+Imprime las dimensiones de la imagen, el área, el vector de alturas como gráfico de barras, una reconstrucción de la curva en consola, y 10 valores x_i -> f(x_i).
 
-La imagen original (567 x 319 píxeles) es mucho más grande que una
-terminal de texto normal, así que ambas soluciones usan **muestreo
-espacial (spatial sampling)**: en vez de recorrer las 567 columnas
-originales, se toman 80 muestras distribuidas uniformemente a lo largo
-del dominio (una cada ~7 columnas). Las alturas resultantes se
-re-escalan proporcionalmente a un número fijo de filas de texto (20
-filas para la curva, 40 caracteres de ancho para el histograma de
-`M[x]`), de modo que la forma general de la curva se conserva aunque
-no se dibuje cada píxel individual.
+## Correr la parte de Haskell
 
-## Área obtenida
+_(pendiente, lo agrega Mateo)_
 
-Con el archivo `curva_binaria_P4.pbm` suministrado (567 x 319 píxeles):
+## Cómo mostramos la imagen en la consola
 
-**Área = 108,660 píxeles cuadrados**
+La imagen es de 567x319 píxeles, mucho más ancha de lo que cabe en una terminal, así que en vez de recorrer las 567 columnas para dibujar, tomamos 80 muestras repartidas uniformemente a lo largo de la imagen y reescalamos las alturas para que quepan en un número fijo de filas/caracteres. Se pierde algo de detalle pero se mantiene la forma general de la curva.
 
-Este valor coincide con el resultado de referencia del ejemplo en C++
-mostrado en el enunciado de la práctica, y debe coincidir también con
-el resultado obtenido por la implementación en Haskell.
+## Resultado
 
-## Comparación de paradigmas (resumen)
+Con la imagen que nos dio el profe (567x319 píxeles):
 
-- **Haskell (funcional):** el problema se ve como una cadena de
-  transformaciones puras sobre datos: `dominio -> alturas -> area`,
-  típicamente `M = map f [0..ancho-1]` y `area = sum M`.
-- **Prolog (lógico/declarativo):** el problema se ve como un conjunto
-  de relaciones que deben cumplirse: `pixel/5`, `altura/5` describen
-  *qué* relación existe entre una coordenada y su color/altura, y
-  `findall/3` le pide a Prolog que encuentre *todos* los valores de
-  `X` que satisfacen esa relación, en vez de iterar explícitamente.
+**Área = 108660 píxeles cuadrados**
+
+Debe coincidir con lo que dé la versión en Haskell.
+
+## Prolog vs Haskell
+
+En Haskell el problema se arma como una cadena de transformaciones: se le aplica f a todo el dominio con `map` y se suma con `sum`. Es "hago esto, después esto".
+
+En Prolog no hay ese "paso a paso": uno define relaciones (`pixel/5`, `altura/5` dicen qué tiene que cumplirse entre una coordenada y su color/altura) y le pide a Prolog, con `findall/3`, que encuentre todos los valores que las cumplen. No se está iterando explícitamente, se está preguntando.

@@ -11,7 +11,7 @@ main :-
     ( current_prolog_flag(argv, [Archivo|_]) -> true ; Archivo = 'curva_binaria_P4.pbm' ),
     resolver(Archivo).
 
-% - lectura del pbm -
+% --- lectura del pbm ---
 % guardo todos los bytes en un termino compuesto (arg/3 accede en O(1))
 
 leer_pbm(Archivo, Ancho, Alto, ArrayDatos) :-
@@ -113,8 +113,9 @@ mostrar_curva(M, Ancho) :-
 
 muestrear(M, Ancho, NOut, Muestras) :-
     length(M, Ancho),
+    MaxI is NOut - 1,
     findall(V,
-        ( between(0, NOut-1, I),
+        ( between(0, MaxI, I),
           X is min(Ancho-1, (I*Ancho) // NOut),
           nth0(X, M, V) ),
         Muestras).
@@ -134,7 +135,7 @@ mostrar_alturas(M, Ancho) :-
           dibujar_bloques(Bloques), format(" ~w~n", [V]) )).
 
 dibujar_bloques(0) :- !.
-dibujar_bloques(N) :- N > 0, write('█'), N1 is N - 1, dibujar_bloques(N1).
+dibujar_bloques(N) :- N > 0, write('#'), N1 is N - 1, dibujar_bloques(N1).
 
 % --- valores de muestra x_i -> f(x_i) ---
 

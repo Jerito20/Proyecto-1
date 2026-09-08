@@ -5,8 +5,8 @@ EAFIT
 
 ## Equipo
 
-- Jerónimo Espinosa López (Prolog)
-- Mateo Zuluaga Buitrago (Haskell)
+- Jerónimo Espinosa López 
+- Mateo Zuluaga Buitrago 
 
 ## Qué hace esto
 
@@ -39,7 +39,15 @@ Imprime las dimensiones de la imagen, el área, el vector de alturas como gráfi
 
 ## Correr la parte de Haskell
 
-_(pendiente, lo agrega Mateo)_
+Necesitas GHC instalado (viene con GHCup: https://www.haskell.org/ghcup/).
+
+```
+cd Haskell
+ghc -O2 Main.hs -o curva
+./curva ../curva_binaria_P4.pbm
+```
+
+En Windows el ejecutable queda como `curva.exe`, se corre igual: `./curva.exe ../curva_binaria_P4.pbm`.
 
 ## Cómo mostramos la imagen en la consola
 

@@ -1,6 +1,3 @@
-% Practica I - Area bajo la curva - Parte Prolog
-% Jeronimo Espinosa Lopez
-
 % Para correr:
 %   ?- [curva].
 %   ?- resolver('curva_binaria_P4.pbm').

@@ -1,7 +1,6 @@
 # Practica I - Area bajo la curva (Haskell + Prolog)
 
-Curso: Lenguajes y Paradigmas de Computación - S2666-0262
-EAFIT
+Curso: Lenguajes y Paradigmas de Computación -0262
 
 ## Equipo
 
